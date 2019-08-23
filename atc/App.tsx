@@ -17,7 +17,7 @@ const SUBSCRIBE_KEY = '';
 export default function App() {
   YellowBox.ignoreWarnings(['Setting a timer']);
   const _console = {...console};
-  console.warn = (message) => {
+  console.warn = (message: String) => {
     if (message.indexOf('Setting a timer') <= -1) {
       _console.warn(message);
     }

@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import CommandButton from './CommandButton';
-import {PLANE_COMMANDS} from '../controllers/actions';
-import PropTypes from 'prop-types';
+import {PlaneCommand} from "../controllers/broadcaster";
 
 // Defines the images to be used in the command button components
 const images = {
@@ -20,51 +19,45 @@ const images = {
   },
 };
 
+interface ICommandBarProps {
+  onCommandIssued: (command: PlaneCommand) => () => void,
+  planeSelected: boolean,
+  planeInFinalApproach: boolean
+}
+
 // Renders a command bar on the right hand side of the screen. Is a container component for
 // the different command buttons that the player can interact with
-export default class CommandBar extends Component {
+export default class CommandBar extends Component<ICommandBarProps> {
   render() {
     const commandsDisabled = !this.props.planeSelected;
     const landingCommandDisabled = !this.props.planeSelected || !this.props.planeInFinalApproach;
     return (
       <View style={styles.commandBar}>
         <CommandButton
-          style={styles.commandButton}
           disabled={commandsDisabled}
-          onPress={this.props.onCommandIssued(PLANE_COMMANDS.DOWNWIND)}
+          onPress={this.props.onCommandIssued(PlaneCommand.DOWNWIND)}
           imageSource={images.leftArrow}
         />
-        <View style={styles.separator} />
+        <View style={styles.separator}/>
         <CommandButton
-          style={styles.commandButton}
           disabled={commandsDisabled}
-          onPress={this.props.onCommandIssued(PLANE_COMMANDS.BASE)}
+          onPress={this.props.onCommandIssued(PlaneCommand.BASE)}
           imageSource={images.downArrow}
         />
-        <View style={styles.separator} />
+        <View style={styles.separator}/>
         <CommandButton
-          style={styles.commandButton}
           disabled={commandsDisabled}
-          onPress={this.props.onCommandIssued(PLANE_COMMANDS.LEAVE)}
+          onPress={this.props.onCommandIssued(PlaneCommand.LEAVE)}
           imageSource={images.noEntry}
         />
-        <View style={styles.separator} />
+        <View style={styles.separator}/>
         <CommandButton
-          style={styles.commandButton}
           disabled={landingCommandDisabled}
-          onPress={this.props.onCommandIssued(PLANE_COMMANDS.CLEARED)}
+          onPress={this.props.onCommandIssued(PlaneCommand.CLEARED)}
           imageSource={images.thumbGreen}
         />
       </View>
     );
-  }
-
-  static get propTypes() {
-    return {
-      onCommandIssued: PropTypes.func,
-      planeSelected: PropTypes.bool,
-      planeInFinalApproach: PropTypes.bool
-    };
   }
 }
 

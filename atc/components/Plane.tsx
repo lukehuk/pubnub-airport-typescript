@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import PropTypes from 'prop-types';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {IPlaneData, PlaneAction} from "./types";
+
+interface IPlaneProps {
+  planeData: IPlaneData,
+  onPlaneSelect: (planeName: string) => void,
+  planeName: string,
+  planeSelected: boolean
+}
 
 // Renders a single plane at its current location. Plane name and fuel level are also displayed.
 // If the plane is selected it will render differently.
-export default class Plane extends Component {
+export default class Plane extends Component<IPlaneProps> {
   onPlanePressed() {
     this.props.onPlaneSelect(this.props.planeName);
   }
@@ -15,31 +22,21 @@ export default class Plane extends Component {
     const fuelPercent = Math.floor((plane.remainingFuel / plane.fuelCapacity) * 100);
     const left = plane.currentX;
     const top = plane.currentY;
-    const opacity = plane.currentAction === 'landing' ? plane.currentX / plane.destinationX : 1;
+    const opacity = plane.currentAction === PlaneAction.LANDING ? 1 - (plane.currentX / plane.destinationX) : 1;
 
     return (
       <TouchableOpacity
         onPress={() => this.onPlanePressed()}
-        style={[styles.container, {left: `${left}%`, top: `${top}%`, opacity: opacity}]}>
-        <View style={styles.planeDetails}>
-          <Text style={styles.planeName}>{this.props.planeName}</Text>
-        </View>
-        <View style={[styles.plane, {backgroundColor: planeColor}]}/>
-        <View style={styles.fuelIndicator}>
-          <View style={[styles.fuelLevel, {width: `${fuelPercent}%`}]}/>
-        </View>
+        style={[styles.container, {left: `${left}%`, top: `${top}%`}]}>
+          <View style={[styles.planeDetails, {opacity: opacity}]}>
+            <Text style={styles.planeName}>{this.props.planeName}</Text>
+          </View>
+          <View style={[styles.plane, {backgroundColor: planeColor, opacity: opacity}]}/>
+          <View style={[styles.fuelIndicator, {opacity: opacity}]}>
+            <View style={[styles.fuelLevel, {width: `${fuelPercent}%`}]}/>
+          </View>
       </TouchableOpacity>
     );
-  }
-
-  static get propTypes() {
-    return {
-      planeData: PropTypes.object,
-      onPlaneSelect: PropTypes.func,
-      planeName: PropTypes.string,
-      planeSelected: PropTypes.bool
-
-    };
   }
 }
 

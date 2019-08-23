@@ -1,13 +1,21 @@
 import PubNub from 'pubnub';
 import {newGameEvent, updatePlanes} from './actions';
+import {IBroadcaster, IBroadcasterConfig} from "../components/types";
 
 const ATC_PUB_CHANNEL = 'airfield-alpha-atc';
 const PLANES_SUB_CHANNEL = 'airfield-alpha';
 const GAME_EVENT_SUB_CHANNEL = 'airfield-alpha-events';
 
+export enum PlaneCommand {
+  DOWNWIND = 'DOWNWIND',
+  BASE = 'BASE',
+  LEAVE = 'LEAVE',
+  CLEARED = 'CLEARED'
+}
+
 // Publish a message to the specified pubnub channel
-function issuePlaneWithCommand(pubnub) {
-  return (planeName, command) => {
+function issuePlaneWithCommand(pubnub: PubNub) {
+  return (planeName: string, command: PlaneCommand) => {
     pubnub.publish({
       channel: ATC_PUB_CHANNEL,
       message: {planeName, command}
@@ -19,7 +27,7 @@ function issuePlaneWithCommand(pubnub) {
 
 // Init function that creates a PubNub instance and returns an object with callable functions
 // Config object expected to contain PubNub API keys and Redux action dispatcher
-export function init(config) {
+export function init(config: IBroadcasterConfig): IBroadcaster {
   const pubnub = new PubNub({
     publishKey: config.publishKey,
     subscribeKey: config.subscribeKey

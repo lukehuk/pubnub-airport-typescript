@@ -1,15 +1,32 @@
 import React, {Component} from 'react';
-import {View, Alert} from 'react-native';
+import {Alert, View} from 'react-native';
 import CommandBar from './CommandBar';
 import SatelliteView from './SatelliteView';
 import ComHistoryBar from './ComHistoryBar';
 import {selectPlane} from '../controllers/actions';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {IBroadcaster, IGameStatus, IPlanesData, PlaneAction} from "./types";
+import {PlaneCommand} from "../controllers/broadcaster";
+import {Dispatch} from "redux";
+import {AtcAppState} from "../controllers/reducers";
+
+interface IGameScreenStateProps {
+  selectedPlane: string
+  planes: IPlanesData,
+  gameStatus: IGameStatus,
+}
+
+interface IGameScreenDispatchProps {
+  onPlaneSelect: (planeName: string) => void,
+}
+
+interface IGameScreenProps {
+  broadcaster: IBroadcaster
+}
 
 // Container component for the game. Gets data from the Redux store and converts it into props for
 // the child components.
-class GameScreen extends Component {
+class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IGameScreenDispatchProps> {
   render() {
     const selectedPlaneName = this.props.selectedPlane;
     const planes = this.props.planes;
@@ -18,17 +35,17 @@ class GameScreen extends Component {
     const isPlaneSelected = planes[selectedPlaneName] !== undefined;
     const selectedPlaneData = planes[selectedPlaneName];
 
-    const onCommandIssued = (command) => () => {
+    const onCommandIssued = (command: PlaneCommand) => () => {
       this.props.broadcaster.issuePlaneWithCommand(selectedPlaneName, command);
     };
-    const planeInFinalApproach = isPlaneSelected && selectedPlaneData.currentAction === 'runway';
+    const planeInFinalApproach = isPlaneSelected && selectedPlaneData.currentAction === PlaneAction.RUNWAY;
 
     return (
       <View style={{flex: 1, width: '100%', flexDirection: 'column'}}>
         <View style={{flex: 1, zIndex: 10}}>
           <ComHistoryBar
             lastAtcTransmission={isPlaneSelected ? selectedPlaneData.lastAtcTransmission : 'N/A'}
-            lastPlaneTransmission={isPlaneSelected ? selectedPlaneData.lastPlaneTransmission: 'N/A'}
+            lastPlaneTransmission={isPlaneSelected ? selectedPlaneData.lastPlaneTransmission : 'N/A'}
           />
         </View>
         <View style={{flex: 8}}>
@@ -54,7 +71,7 @@ class GameScreen extends Component {
     );
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IGameScreenProps & IGameScreenStateProps & IGameScreenDispatchProps) {
     if (prevProps.gameStatus.score < this.props.gameStatus.score) {
       Alert.alert('Plane landed!', 'Current score: ' + this.props.gameStatus.score);
     }
@@ -62,21 +79,10 @@ class GameScreen extends Component {
       Alert.alert('GAME OVER!', 'A plane has crashed! Final score: ' + this.props.gameStatus.score);
     }
   }
-
-
-  static get propTypes() {
-    return {
-      selectedPlane: PropTypes.string,
-      planes: PropTypes.object,
-      gameStatus: PropTypes.object,
-      onPlaneSelect: PropTypes.func,
-      broadcaster: PropTypes.object
-    };
-  }
 }
 
 // Used for selecting the needed data from the Redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AtcAppState) => {
   return {
     selectedPlane: state.selectedPlane,
     planes: state.planes,
@@ -85,16 +91,16 @@ const mapStateToProps = (state) => {
 };
 
 // Used for dispatching actions to the Redux store
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    onPlaneSelect: (planeName) => {
+    onPlaneSelect: (planeName: string) => {
       dispatch(selectPlane(planeName));
     }
   };
 };
 
 // Connects the React component to the Redux store
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<IGameScreenStateProps, IGameScreenDispatchProps, IGameScreenProps, AtcAppState>(
+  mapStateToProps,
+  mapDispatchToProps
 )(GameScreen);

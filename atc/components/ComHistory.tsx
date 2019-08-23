@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import PropTypes from 'prop-types';
+import {IURI} from "./types";
+
+interface IComHistoryProps {
+  imageSource: IURI,
+  title: string,
+  lastMessage: string
+}
 
 // Renders a communication history area
-export default class ComHistory extends Component {
+export default class ComHistory extends Component<IComHistoryProps> {
   render() {
     return (
-      <View style={styles.comHistory} flexDirection='row'>
+      <View style={styles.comHistory}>
         <View style={styles.icon}>
           <Image style={styles.iconImage} source={this.props.imageSource.uri}/>
         </View>
@@ -17,21 +23,14 @@ export default class ComHistory extends Component {
       </View>
     );
   }
-
-  static get propTypes() {
-    return {
-      imageSource: PropTypes.object,
-      title: PropTypes.string,
-      lastMessage: PropTypes.string
-    };
-  }
 }
 
 const styles = StyleSheet.create({
   comHistory: {
     flex: 1,
     borderBottomWidth: 1,
-    borderBottomColor: '#000000'
+    borderBottomColor: '#000000',
+    flexDirection: 'row'
   },
   content: {
     flex: 6

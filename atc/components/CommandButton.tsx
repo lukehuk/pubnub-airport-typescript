@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
-import PropTypes from 'prop-types';
+import {IURI} from "./types";
+
+interface ICommandButtonProps {
+  onPress: () => void,
+  disabled: boolean,
+  imageSource: IURI
+}
 
 // Renders a single command button. If no plane is selected the button will be disabled
-export default class CommandButton extends Component {
+export default class CommandButton extends Component<ICommandButtonProps> {
   render() {
     const commandOpacity = this.props.disabled ? 0.3 : 1;
 
@@ -22,14 +28,6 @@ export default class CommandButton extends Component {
       </View>
 
     );
-  }
-
-  static get propTypes() {
-    return {
-      onPress: PropTypes.func,
-      disabled: PropTypes.bool,
-      imageSource: PropTypes.object
-    };
   }
 }
 

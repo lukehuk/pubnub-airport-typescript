@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-import PropTypes from 'prop-types';
+import {IPlaneData} from "./types";
+
+interface IPlaneDestinationMarkerProps {
+  planeData: IPlaneData,
+}
 
 // Renders an indicator on screen at the selected plane's destination coordinates
-export default class PlaneDestinationMarker extends Component {
+export default class PlaneDestinationMarker extends Component<IPlaneDestinationMarkerProps> {
   render() {
     const plane = this.props.planeData;
     const left = plane.destinationX;
@@ -14,15 +18,6 @@ export default class PlaneDestinationMarker extends Component {
         <View style={styles.destinationMarker}/>
       </View>
     );
-  }
-
-  static get propTypes() {
-    return {
-      planeData: PropTypes.object,
-      onPlaneSelect: PropTypes.func,
-      planeName: PropTypes.string,
-      planeSelected: PropTypes.bool
-    };
   }
 }
 
