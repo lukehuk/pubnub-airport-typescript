@@ -1,34 +1,34 @@
-import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
-import CommandButton from './CommandButton';
+import React, {Component} from "react";
+import {StyleSheet, View} from "react-native";
 import {PlaneCommand} from "../controllers/broadcaster";
+import CommandButton from "./CommandButton";
 
 // Defines the images to be used in the command button components
 const images = {
-  leftArrow: {
-    uri: require('../assets/images/arrow-left.png')
-  },
   downArrow: {
-    uri: require('../assets/images/arrow-down.png')
+    uri: require("../assets/images/arrow-down.png"),
+  },
+  leftArrow: {
+    uri: require("../assets/images/arrow-left.png"),
   },
   noEntry: {
-    uri: require('../assets/images/no-entry.png')
+    uri: require("../assets/images/no-entry.png"),
   },
   thumbGreen: {
-    uri: require('../assets/images/thumb-green.png')
+    uri: require("../assets/images/thumb-green.png"),
   },
 };
 
 interface ICommandBarProps {
-  onCommandIssued: (command: PlaneCommand) => () => void,
-  planeSelected: boolean,
-  planeInFinalApproach: boolean
+  onCommandIssued: (command: PlaneCommand) => () => void;
+  planeSelected: boolean;
+  planeInFinalApproach: boolean;
 }
 
 // Renders a command bar on the right hand side of the screen. Is a container component for
 // the different command buttons that the player can interact with
 export default class CommandBar extends Component<ICommandBarProps> {
-  render() {
+  public render() {
     const commandsDisabled = !this.props.planeSelected;
     const landingCommandDisabled = !this.props.planeSelected || !this.props.planeInFinalApproach;
     return (
@@ -63,17 +63,17 @@ export default class CommandBar extends Component<ICommandBarProps> {
 
 const styles = StyleSheet.create({
   commandBar: {
-    flex: 1,
-    flexDirection: 'column',
-    borderLeftColor: '#000000',
+    borderLeftColor: "#000000",
     borderLeftWidth: 1,
+    flex: 1,
+    flexDirection: "column",
   },
   commandButton: {
     flex: 1,
-    width: '100%'
+    width: "100%",
   },
   separator: {
-    borderBottomColor: '#000000',
+    borderBottomColor: "#000000",
     borderBottomWidth: 1,
-  }
+  },
 });

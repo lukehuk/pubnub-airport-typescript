@@ -4,25 +4,25 @@ import {IGameStatus, IPlaneData} from "../components/types";
 export enum Action {
   SELECT_PLANE,
   UPDATE_PLANES,
-  NEW_GAME_EVENT
+  NEW_GAME_EVENT,
 }
 
 interface ISelectPlaneAction {
-  type: Action.SELECT_PLANE,
-  planeName: string
+  type: Action.SELECT_PLANE;
+  planeName: string;
 }
 
 interface IUpdatePlaneAction {
-  type: Action.UPDATE_PLANES,
-  planes: IPlaneData[]
+  type: Action.UPDATE_PLANES;
+  planes: IPlaneData[];
 }
 
 interface INewGameEventAction {
-  type: Action.NEW_GAME_EVENT,
-  event: IGameStatus
+  type: Action.NEW_GAME_EVENT;
+  event: IGameStatus;
 }
 
-export type ActionTypes = ISelectPlaneAction | IUpdatePlaneAction | INewGameEventAction
+export type ActionTypes = ISelectPlaneAction | IUpdatePlaneAction | INewGameEventAction;
 
 // Action creators
 export function selectPlane(planeName: string): ActionTypes {

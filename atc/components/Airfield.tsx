@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {Component} from "react";
+import {StyleSheet, View} from "react-native";
 
 // Component renders a runway and traffic pattern
 export default class Airfield extends Component {
-  render() {
+  public render() {
     return (
       <View style={styles.airfield}>
         <View style={styles.finalApproach}/>
@@ -18,45 +18,44 @@ export default class Airfield extends Component {
 
 const styles = StyleSheet.create({
   airfield: {
+    backgroundColor: "#8aa81c",
     flex: 1,
-    backgroundColor: '#8aa81c'
-  },
-  trafficRoute: {
-    position: 'relative',
-    height: '60%',
-    marginLeft: '12%',
-    marginRight: '12%',
-    top: '20%',
-    borderWidth: 3,
-    borderColor: '#000000',
-    borderRadius: 5,
-    borderStyle: 'dashed'
   },
   finalApproach: {
-    position: 'absolute',
-    top: '74%',
-    left: '12%',
-    width: '21%',
-    height: '12%',
-    backgroundColor: '#a9b322',
+    backgroundColor: "#a9b322",
+    borderBottomLeftRadius: 50,
     borderTopLeftRadius: 50,
-    borderBottomLeftRadius: 50
+    height: "12%",
+    left: "12%",
+    position: "absolute",
+    top: "74%",
+    width: "21%",
   },
   runway: {
-    position: 'absolute',
-    top: '74%',
-    left: '33%',
-    width: '45%',
-    height: '12%',
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     borderRadius: 2,
+    height: "12%",
+    left: "33%",
+    position: "absolute",
+    top: "74%",
+    width: "45%",
   },
   runwayPaint: {
-    marginTop: '6%',
-    borderColor: '#ffffff',
-    borderWidth: 2,
+    borderColor: "#ffffff",
     borderRadius: 5,
-    borderStyle: 'dashed'
-  }
+    borderStyle: "dashed",
+    borderWidth: 2,
+    marginTop: "6%",
+  },
+  trafficRoute: {
+    borderColor: "#000000",
+    borderRadius: 5,
+    borderStyle: "dashed",
+    borderWidth: 3,
+    height: "60%",
+    marginLeft: "12%",
+    marginRight: "12%",
+    position: "relative",
+    top: "20%",
+  },
 });
-

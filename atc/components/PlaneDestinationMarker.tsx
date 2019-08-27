@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {Component} from "react";
+import {StyleSheet, View} from "react-native";
 import {IPlaneData} from "./types";
 
 interface IPlaneDestinationMarkerProps {
-  planeData: IPlaneData,
+  planeData: IPlaneData;
 }
 
 // Renders an indicator on screen at the selected plane's destination coordinates
 export default class PlaneDestinationMarker extends Component<IPlaneDestinationMarkerProps> {
-  render() {
+  public render() {
     const plane = this.props.planeData;
     const left = plane.destinationX;
     const top = plane.destinationY;
@@ -23,20 +23,19 @@ export default class PlaneDestinationMarker extends Component<IPlaneDestinationM
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    height: 16,
     marginLeft: -8,
     marginTop: -8,
+    position: "absolute",
     width: 16,
-    height: 16,
   },
   destinationMarker: {
-    backgroundColor: '#ff3300',
+    backgroundColor: "#ff3300",
+    borderColor: "#ffffff",
     borderRadius: 30,
-    borderStyle: 'dotted',
-    borderColor: '#ffffff',
+    borderStyle: "dotted",
     borderWidth: 3,
-    width: '100%',
-    height: '100%',
-  }
+    height: "100%",
+    width: "100%",
+  },
 });
-

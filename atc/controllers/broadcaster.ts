@@ -1,16 +1,16 @@
-import PubNub from 'pubnub';
-import {newGameEvent, updatePlanes} from './actions';
+import PubNub from "pubnub";
 import {IBroadcaster, IBroadcasterConfig} from "../components/types";
+import {newGameEvent, updatePlanes} from "./actions";
 
-const ATC_PUB_CHANNEL = 'airfield-alpha-atc';
-const PLANES_SUB_CHANNEL = 'airfield-alpha';
-const GAME_EVENT_SUB_CHANNEL = 'airfield-alpha-events';
+const ATC_PUB_CHANNEL = "airfield-alpha-atc";
+const PLANES_SUB_CHANNEL = "airfield-alpha";
+const GAME_EVENT_SUB_CHANNEL = "airfield-alpha-events";
 
 export enum PlaneCommand {
-  DOWNWIND = 'DOWNWIND',
-  BASE = 'BASE',
-  LEAVE = 'LEAVE',
-  CLEARED = 'CLEARED'
+  DOWNWIND = "DOWNWIND",
+  BASE = "BASE",
+  LEAVE = "LEAVE",
+  CLEARED = "CLEARED",
 }
 
 // Publish a message to the specified pubnub channel
@@ -18,7 +18,7 @@ function issuePlaneWithCommand(pubnub: PubNub) {
   return (planeName: string, command: PlaneCommand) => {
     pubnub.publish({
       channel: ATC_PUB_CHANNEL,
-      message: {planeName, command}
+      message: {planeName, command},
     }, (status, response) => {
       console.log(status, response);
     });
@@ -30,7 +30,7 @@ function issuePlaneWithCommand(pubnub: PubNub) {
 export function init(config: IBroadcasterConfig): IBroadcaster {
   const pubnub = new PubNub({
     publishKey: config.publishKey,
-    subscribeKey: config.subscribeKey
+    subscribeKey: config.subscribeKey,
   });
 
   pubnub.addListener({
@@ -40,16 +40,16 @@ export function init(config: IBroadcasterConfig): IBroadcaster {
       } else {
         config.dispatch(newGameEvent(message.message));
       }
-    }
+    },
   });
 
-  console.log('Subscribing to ' + PLANES_SUB_CHANNEL + ' and ' + GAME_EVENT_SUB_CHANNEL);
+  console.log("Subscribing to " + PLANES_SUB_CHANNEL + " and " + GAME_EVENT_SUB_CHANNEL);
 
   pubnub.subscribe({
-    channels: [PLANES_SUB_CHANNEL, GAME_EVENT_SUB_CHANNEL]
+    channels: [PLANES_SUB_CHANNEL, GAME_EVENT_SUB_CHANNEL],
   });
 
   return {
-    issuePlaneWithCommand: issuePlaneWithCommand(pubnub)
+    issuePlaneWithCommand: issuePlaneWithCommand(pubnub),
   };
 }

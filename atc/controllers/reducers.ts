@@ -1,10 +1,9 @@
-import {combineReducers} from 'redux';
-import {Action, ActionTypes} from "./actions";
+import {combineReducers} from "redux";
 import {IGameStatus, IPlanesData} from "../components/types";
-
+import {Action, ActionTypes} from "./actions";
 
 // Reducer to handle a plane selection action
-function selectedPlane(state = '', action: ActionTypes): string {
+function selectedPlane(state = "", action: ActionTypes): string {
   switch (action.type) {
     case Action.SELECT_PLANE:
       return action.planeName;
@@ -38,12 +37,10 @@ function gameStatus(state = {score: 0, crashed: false}, action: ActionTypes): IG
 }
 
 const atcApp = combineReducers({
-  selectedPlane,
+  gameStatus,
   planes,
-  gameStatus
+  selectedPlane,
 });
 
-
-export type AtcAppState = ReturnType<typeof atcApp>
+export type AtcAppState = ReturnType<typeof atcApp>;
 export default atcApp;
-

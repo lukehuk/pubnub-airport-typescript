@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
-import {Image, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import React, {Component} from "react";
+import {Image, StyleSheet, TouchableNativeFeedback, View} from "react-native";
 import {IURI} from "./types";
 
 interface ICommandButtonProps {
-  onPress: () => void,
-  disabled: boolean,
-  imageSource: IURI
+  onPress: () => void;
+  disabled: boolean;
+  imageSource: IURI;
 }
 
 // Renders a single command button. If no plane is selected the button will be disabled
 export default class CommandButton extends Component<ICommandButtonProps> {
-  render() {
+  public render() {
     const commandOpacity = this.props.disabled ? 0.3 : 1;
 
     return (
-      <View style={{flex: 1, width: '100%', flexDirection: 'column'}}>
+      <View style={{flex: 1, width: "100%", flexDirection: "column"}}>
         <TouchableNativeFeedback
           onPress={this.props.onPress}
           disabled={this.props.disabled}>
@@ -32,18 +32,18 @@ export default class CommandButton extends Component<ICommandButtonProps> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    height: '100%'
-  },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#2196F3',
-    height: '100%',
-    justifyContent: 'center'
+    alignItems: "center",
+    backgroundColor: "#2196F3",
+    height: "100%",
+    justifyContent: "center",
   },
   buttonImage: {
-    width: '100%',
-    resizeMode: 'contain',
-  }
+    resizeMode: "contain",
+    width: "100%",
+  },
+  container: {
+    alignItems: "center",
+    height: "100%",
+  },
 });

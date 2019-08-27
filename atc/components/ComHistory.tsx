@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {Component} from "react";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {IURI} from "./types";
 
 interface IComHistoryProps {
-  imageSource: IURI,
-  title: string,
-  lastMessage: string
+  imageSource: IURI;
+  title: string;
+  lastMessage: string;
 }
 
 // Renders a communication history area
 export default class ComHistory extends Component<IComHistoryProps> {
-  render() {
+  public render() {
     return (
       <View style={styles.comHistory}>
         <View style={styles.icon}>
@@ -27,27 +27,27 @@ export default class ComHistory extends Component<IComHistoryProps> {
 
 const styles = StyleSheet.create({
   comHistory: {
-    flex: 1,
+    borderBottomColor: "#000000",
     borderBottomWidth: 1,
-    borderBottomColor: '#000000',
-    flexDirection: 'row'
+    flex: 1,
+    flexDirection: "row",
   },
   content: {
-    flex: 6
-  },
-  title: {
-    fontWeight: 'bold',
+    flex: 6,
   },
   icon: {
+    alignItems: "center",
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   iconImage: {
-    height: '100%',
-    resizeMode: 'contain'
+    height: "100%",
+    resizeMode: "contain",
   },
   lastMessage: {
-    fontStyle: 'italic'
-  }
+    fontStyle: "italic",
+  },
+  title: {
+    fontWeight: "bold",
+  },
 });
