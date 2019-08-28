@@ -7,17 +7,19 @@ import {PlaneCommand} from "../controllers/broadcaster";
 import {AtcAppState} from "../controllers/reducers";
 import ComHistoryBar from "./ComHistoryBar";
 import CommandBar from "./CommandBar";
+import GameStatusBar from "./GameStatusBar";
 import SatelliteView from "./SatelliteView";
-import {IBroadcaster, IGameStatus, IPlanesData, PlaneAction} from "./types";
+import {IBroadcaster, IControllerData, IGameStatus, IPlanesData, PlaneAction} from "./types";
 
 interface IGameScreenStateProps {
+  controllers: IControllerData;
   selectedPlane: string;
   planes: IPlanesData;
   gameStatus: IGameStatus;
 }
 
 interface IGameScreenDispatchProps {
-  onPlaneSelect: (planeName: string) => void;
+  onPlaneSelect: (broadcaster: IBroadcaster) => (planeName: string) => void;
 }
 
 interface IGameScreenProps {
@@ -30,7 +32,7 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
   public render() {
     const selectedPlaneName = this.props.selectedPlane;
     const planes = this.props.planes;
-    const onPlaneSelect = this.props.onPlaneSelect;
+    const onPlaneSelect = this.props.onPlaneSelect(this.props.broadcaster);
 
     const isPlaneSelected = planes[selectedPlaneName] !== undefined;
     const selectedPlaneData = planes[selectedPlaneName];
@@ -43,12 +45,19 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
     return (
       <View style={{flex: 1, width: "100%", flexDirection: "column"}}>
         <View style={{flex: 1, zIndex: 10}}>
+          <GameStatusBar
+            score={this.props.gameStatus.score}
+            planeCount={Object.keys(planes).length}
+            controllers={this.props.controllers.count}
+          />
+        </View>
+        <View style={{flex: 2, zIndex: 10}}>
           <ComHistoryBar
             lastAtcTransmission={isPlaneSelected ? selectedPlaneData.lastAtcTransmission : "N/A"}
             lastPlaneTransmission={isPlaneSelected ? selectedPlaneData.lastPlaneTransmission : "N/A"}
           />
         </View>
-        <View style={{flex: 8}}>
+        <View style={{flex: 16}}>
           <View style={{flex: 1, flexDirection: "row"}}>
             <View style={{flex: 8, width: "100%"}}>
               <SatelliteView
@@ -56,6 +65,7 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
                 onPlaneSelect={onPlaneSelect}
                 isPlaneSelected={isPlaneSelected}
                 selectedPlane={selectedPlaneName}
+                controllerPlanes={this.props.controllers.controllerPlanes}
               />
             </View>
             <View style={{flex: 1, width: "100%"}}>
@@ -63,6 +73,7 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
                 planeSelected={isPlaneSelected}
                 planeInFinalApproach={planeInFinalApproach}
                 onCommandIssued={onCommandIssued}
+                didCrash={this.props.gameStatus.crashed}
               />
             </View>
           </View>
@@ -71,10 +82,7 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
     );
   }
 
-  public componentDidUpdate(prevProps: IGameScreenProps & IGameScreenStateProps & IGameScreenDispatchProps) {
-    if (prevProps.gameStatus.score < this.props.gameStatus.score) {
-      Alert.alert("Plane landed!", "Current score: " + this.props.gameStatus.score);
-    }
+  public componentDidUpdate() {
     if (this.props.gameStatus.crashed) {
       Alert.alert("GAME OVER!", "A plane has crashed! Final score: " + this.props.gameStatus.score);
     }
@@ -82,8 +90,9 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
 }
 
 // Used for selecting the needed data from the Redux store
-const mapStateToProps = (state: AtcAppState) => {
+const mapStateToProps = (state: AtcAppState): IGameScreenStateProps => {
   return {
+    controllers: state.controllers,
     gameStatus: state.gameStatus,
     planes: state.planes,
     selectedPlane: state.selectedPlane,
@@ -91,10 +100,11 @@ const mapStateToProps = (state: AtcAppState) => {
 };
 
 // Used for dispatching actions to the Redux store
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): IGameScreenDispatchProps => {
   return {
-    onPlaneSelect: (planeName: string) => {
+    onPlaneSelect: (broadcaster: IBroadcaster) => (planeName: string) => {
       dispatch(selectPlane(planeName));
+      broadcaster.notifyPlaneSelection(planeName);
     },
   };
 };

@@ -7,6 +7,7 @@ interface IPlaneProps {
   onPlaneSelect: (planeName: string) => void;
   planeName: string;
   planeSelected: boolean;
+  controllerSelected: boolean;
 }
 
 // Renders a single plane at its current location. Plane name and fuel level are also displayed.
@@ -19,6 +20,7 @@ export default class Plane extends Component<IPlaneProps> {
   public render() {
     const plane = this.props.planeData;
     const planeColor = this.props.planeSelected ? "#ffcc00" : "#808080";
+    const planeBorderColour = this.props.controllerSelected ? "#d02129" : "#808080";
     const fuelPercent = Math.floor((plane.remainingFuel / plane.fuelCapacity) * 100);
     const left = plane.currentX;
     const top = plane.currentY;
@@ -31,7 +33,7 @@ export default class Plane extends Component<IPlaneProps> {
           <View style={[styles.planeDetails, {opacity}]}>
             <Text style={styles.planeName}>{this.props.planeName}</Text>
           </View>
-          <View style={[styles.plane, {backgroundColor: planeColor, opacity}]}/>
+          <View style={[styles.plane, {backgroundColor: planeColor, borderColor: planeBorderColour, opacity}]}/>
           <View style={[styles.fuelIndicator, {opacity}]}>
             <View style={[styles.fuelLevel, {width: `${fuelPercent}%`}]}/>
           </View>
@@ -60,8 +62,6 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   plane: {
-    backgroundColor: "#ffcc00",
-    borderColor: "#808080",
     borderRadius: 30,
     borderWidth: 3,
     height: "100%",

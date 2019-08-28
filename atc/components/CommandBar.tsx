@@ -23,14 +23,15 @@ interface ICommandBarProps {
   onCommandIssued: (command: PlaneCommand) => () => void;
   planeSelected: boolean;
   planeInFinalApproach: boolean;
+  didCrash: boolean;
 }
 
 // Renders a command bar on the right hand side of the screen. Is a container component for
 // the different command buttons that the player can interact with
 export default class CommandBar extends Component<ICommandBarProps> {
   public render() {
-    const commandsDisabled = !this.props.planeSelected;
-    const landingCommandDisabled = !this.props.planeSelected || !this.props.planeInFinalApproach;
+    const commandsDisabled = !this.props.planeSelected && this.props.didCrash;
+    const landingCommandDisabled = commandsDisabled || !this.props.planeInFinalApproach;
     return (
       <View style={styles.commandBar}>
         <CommandButton

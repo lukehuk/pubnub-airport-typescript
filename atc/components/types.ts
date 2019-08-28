@@ -20,7 +20,7 @@ export enum PlaneAction {
 }
 
 export interface IPlanesData {
-  [key: string]: IPlaneData;
+  [key: string]: IPlaneData; // Key is planeName
 }
 
 export interface IPlaneData {
@@ -41,6 +41,20 @@ export interface IGameStatus {
   crashed: boolean;
 }
 
+export interface IControllerPlanes {
+  [key: string]: string; // Key is controller id, value is name of selected plane
+}
+
+export interface IControllerData {
+  count: number;
+  controllerPlanes: IControllerPlanes;
+}
+
+export interface IControllerDetails {
+  controllerId: string;
+  controllerPlane: string;
+}
+
 export interface IBroadcasterConfig {
   publishKey: string;
   subscribeKey: string;
@@ -49,4 +63,5 @@ export interface IBroadcasterConfig {
 
 export interface IBroadcaster {
   issuePlaneWithCommand: (planeName: string, command: PlaneCommand) => void;
+  notifyPlaneSelection: (planeName: string) => void;
 }

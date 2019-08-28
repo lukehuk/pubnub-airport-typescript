@@ -1,8 +1,7 @@
 import {AppLoading, ScreenOrientation} from "expo";
 import {Asset} from "expo-asset";
 import React, {useState} from "react";
-import {StatusBar, StyleSheet, View} from "react-native";
-import {YellowBox} from "react-native";
+import {StatusBar, StyleSheet, View, YellowBox} from "react-native";
 import {Provider} from "react-redux";
 import {createStore} from "redux";
 import GameScreen from "./components/GameScreen";
@@ -26,14 +25,6 @@ export default function App() {
   // Declare new state variable 'isLoadingComplete', default to false, set with 'setLoadingComplete'
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
-  const store = createStore(atcApp);
-
-  const broadcaster = Broadcaster.init({
-    dispatch: store.dispatch,
-    publishKey: PUBLISH_KEY,
-    subscribeKey: SUBSCRIBE_KEY,
-  });
-
   if (!isLoadingComplete) {
     return (
       <AppLoading
@@ -43,6 +34,17 @@ export default function App() {
       />
     );
   } else {
+
+    // Create Redux store
+    const store = createStore(atcApp);
+
+    // Create the PubNub broadcaster
+    const broadcaster = Broadcaster.init({
+      dispatch: store.dispatch,
+      publishKey: PUBLISH_KEY,
+      subscribeKey: SUBSCRIBE_KEY,
+    });
+
     // Hide device status bar (where clock, signal strength etc shown), create game screen component
     return (
       <Provider store={store}>

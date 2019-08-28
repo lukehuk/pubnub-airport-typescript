@@ -1,10 +1,12 @@
-import {IGameStatus, IPlaneData} from "../components/types";
+import {IControllerDetails, IGameStatus, IPlaneData} from "../components/types";
 
 // Actions
 export enum Action {
   SELECT_PLANE,
   UPDATE_PLANES,
   NEW_GAME_EVENT,
+  CONTROLLER_PLANE_SELECTED,
+  CONTROLLER_COUNT_CHANGED,
 }
 
 interface ISelectPlaneAction {
@@ -22,7 +24,18 @@ interface INewGameEventAction {
   event: IGameStatus;
 }
 
-export type ActionTypes = ISelectPlaneAction | IUpdatePlaneAction | INewGameEventAction;
+interface IControllerCountChange {
+  type: Action.CONTROLLER_COUNT_CHANGED;
+  newCount: number;
+}
+
+interface IControllerPlaneSelected {
+  type: Action.CONTROLLER_PLANE_SELECTED;
+  controllerDetails: IControllerDetails;
+}
+
+export type ActionTypes =
+  ISelectPlaneAction | IUpdatePlaneAction | INewGameEventAction | IControllerCountChange | IControllerPlaneSelected;
 
 // Action creators
 export function selectPlane(planeName: string): ActionTypes {
@@ -35,4 +48,12 @@ export function updatePlanes(planeData: IPlaneData[]): ActionTypes {
 
 export function newGameEvent(eventDetails: IGameStatus): ActionTypes {
   return {type: Action.NEW_GAME_EVENT, event: eventDetails};
+}
+
+export function controllerCountChange(newCount: number): ActionTypes {
+  return {type: Action.CONTROLLER_COUNT_CHANGED, newCount};
+}
+
+export function controllerPlaneSelected(controllerDetails: IControllerDetails): ActionTypes {
+  return {type: Action.CONTROLLER_PLANE_SELECTED, controllerDetails};
 }
