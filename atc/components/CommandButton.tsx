@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, StyleSheet, TouchableNativeFeedback, View} from "react-native";
+import {Image, StyleSheet, TouchableHighlight, View} from "react-native";
 import {IURI} from "./types";
 
 interface ICommandButtonProps {
@@ -14,17 +14,18 @@ export default class CommandButton extends Component<ICommandButtonProps> {
     const commandOpacity = this.props.disabled ? 0.3 : 1;
 
     return (
-      <View style={{flex: 1, width: "100%", flexDirection: "column"}}>
-        <TouchableNativeFeedback
+      <View style={[styles.fillSpace, {flexDirection: "column"}]}>
+        <TouchableHighlight
           onPress={this.props.onPress}
-          disabled={this.props.disabled}>
-          <View style={styles.button}>
+          disabled={this.props.disabled}
+          style={styles.fillSpace}>
+          <View style={[styles.fillSpace, styles.button]}>
             <Image
-              style={[styles.buttonImage, {opacity: commandOpacity}]}
+              style={[styles.fillSpace, styles.buttonImage, {opacity: commandOpacity}]}
               source={this.props.imageSource.uri}
             />
           </View>
-        </TouchableNativeFeedback>
+        </TouchableHighlight >
       </View>
 
     );
@@ -34,16 +35,17 @@ export default class CommandButton extends Component<ICommandButtonProps> {
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "#2196F3",
-    height: "100%",
     justifyContent: "center",
   },
   buttonImage: {
     resizeMode: "contain",
-    width: "100%",
   },
   container: {
     alignItems: "center",
     height: "100%",
+  },
+  fillSpace: {
+    flex: 1,
+    width: "100%",
   },
 });

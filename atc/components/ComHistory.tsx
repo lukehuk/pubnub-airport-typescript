@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 6,
+    justifyContent: "center",
   },
   icon: {
     alignItems: "center",
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
   iconImage: {
     height: "100%",
     resizeMode: "contain",
+    width: "100%",
   },
   lastMessage: {
     fontStyle: "italic",

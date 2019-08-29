@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert, View} from "react-native";
+import {Alert, Platform, View} from "react-native";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {selectPlane} from "../controllers/actions";
@@ -84,7 +84,11 @@ class GameScreen extends Component<IGameScreenProps & IGameScreenStateProps & IG
 
   public componentDidUpdate() {
     if (this.props.gameStatus.crashed) {
-      Alert.alert("GAME OVER!", "A plane has crashed! Final score: " + this.props.gameStatus.score);
+      if (Platform.OS === "web") {
+        alert("GAME OVER! A plane has crashed! Final score: " + this.props.gameStatus.score);
+      } else {
+        Alert.alert("GAME OVER!", "A plane has crashed! Final score: " + this.props.gameStatus.score);
+      }
     }
   }
 }

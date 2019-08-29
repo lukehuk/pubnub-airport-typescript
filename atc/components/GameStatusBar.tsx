@@ -12,9 +12,15 @@ export default class GameStatusBar extends Component<IGameStatusBarProps> {
   public render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Planes: {this.props.planeCount}</Text>
-        <Text style={styles.text}>Score: {this.props.score}</Text>
-        <Text style={styles.text}>Controllers: {this.props.controllers}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Planes: {this.props.planeCount}</Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Score: {this.props.score}</Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Controllers: {this.props.controllers}</Text>
+        </View>
       </View>
     );
   }
@@ -30,7 +36,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#ffffff",
+    textAlign: "center",
+  },
+  textContainer: {
     flex: 1,
+    justifyContent: "center",
     textAlign: "center",
   },
 });

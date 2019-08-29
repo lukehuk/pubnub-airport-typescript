@@ -69,9 +69,8 @@ const styles = StyleSheet.create({
   },
   planeDetails: {
     alignItems: "center",
-    height: 3,
+    height: 10,
     justifyContent: "center",
-    marginBottom: 5,
     width: 30,
   },
   planeName: {

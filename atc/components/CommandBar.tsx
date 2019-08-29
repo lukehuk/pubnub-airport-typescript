@@ -30,7 +30,7 @@ interface ICommandBarProps {
 // the different command buttons that the player can interact with
 export default class CommandBar extends Component<ICommandBarProps> {
   public render() {
-    const commandsDisabled = !this.props.planeSelected && this.props.didCrash;
+    const commandsDisabled = !this.props.planeSelected || this.props.didCrash;
     const landingCommandDisabled = commandsDisabled || !this.props.planeInFinalApproach;
     return (
       <View style={styles.commandBar}>
@@ -64,6 +64,7 @@ export default class CommandBar extends Component<ICommandBarProps> {
 
 const styles = StyleSheet.create({
   commandBar: {
+    backgroundColor: "#2196F3",
     borderLeftColor: "#000000",
     borderLeftWidth: 1,
     flex: 1,
